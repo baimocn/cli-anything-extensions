@@ -15,6 +15,7 @@ logs/
 # Local state files (never commit)
 *.qq-harness.json
 *.wx-harness.json
+*.doubao-harness.json
 *.joplin-harness.json
 
 # OS

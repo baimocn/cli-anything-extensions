@@ -13,6 +13,25 @@ stateful CLI, expose a stable `--json` contract. Each subdirectory is one app.
 |---|---|---|---|
 | **QQ** (`qq/`) | ✅ v1.0 — verified end-to-end on a real account | OneBot 11 HTTP (SnowLuma / NapCat bridge) | Read chats, summarize & reply, contacts, group admin, revoke/react/poke, file upload, OCR, profile |
 | **WeChat** (`wx/`) | ✅ v1.0 — verified end-to-end on WeChat 4.2.0.13 | decrypted local DBs (read) + UIA driving via wechatauto (send) | Read chats/contacts/groups/history from decrypted SQLCipher DBs, send/recall/poke via the real client, self-verifying roundtrip |
+| **Doubao** (`doubao/`) | ✅ v1.0 — verified end-to-end on Doubao 2.37.2 | Chrome DevTools Protocol (the app's own Chromium 147 shell) | Ask the AI and wait for finished answers, conversation list/switch/new, transcripts, background screenshots |
+
+## Doubao — replace the Doubao GUI with a CLI
+
+The Doubao Windows app is a Chromium shell, so one launch flag
+(`--remote-debugging-port`) exposes a first-class automation protocol. Every
+command runs as an in-page CDP event — typing, clicking, reading and
+screenshots are **fully background**, no OS focus involved (like QQ; unlike
+WeChat, whose send path must borrow the window).
+
+```bash
+pip install git+https://github.com/baimocn/cli-anything-extensions.git#subdirectory=doubao/agent-harness
+
+cli-anything-doubao --json status --launch          # endpoint up (auto-starts)
+cli-anything-doubao ask "1+1等于几？只回答数字"       # send + wait for the answer
+cli-anything-doubao --json history                  # ordered transcript
+```
+
+Full reference: [`doubao/skills/cli-anything-doubao/SKILL.md`](doubao/skills/cli-anything-doubao/SKILL.md).
 
 ## WeChat — replace the WeChat 4.x GUI with a CLI
 

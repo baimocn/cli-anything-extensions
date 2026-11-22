@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.pytest_tmp*/
+
+# Tooling state
+.mimosa/
+logs/
+*.log
+
+# Local state files (never commit)
+*.qq-harness.json
+*.joplin-harness.json
+
+# OS
+.DS_Store
+Thumbs.db

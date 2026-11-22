@@ -122,8 +122,14 @@ class Session:
         }
 
     def _locked_save_json(self, target: Path, data: dict) -> None:
-        # target is pre-validated by project.safe_target(); no traversal possible.
+        # target is pre-validated by project.safe_target(); the cwd re-check
+        # below is defense-in-depth so the open() can never escape the
+        # working directory even if a future caller skips validation.
         import os
+        allowed = Path.cwd().resolve()
+        resolved = target.resolve()
+        if not resolved.is_relative_to(allowed):
+            raise ValueError(f"State file path escapes working directory: {target}")
         lock_path = str(target) + ".lock"
         lock_fd = os.open(lock_path, os.O_CREAT | os.O_RDWR)
         try:

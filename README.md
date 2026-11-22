@@ -12,6 +12,31 @@ stateful CLI, expose a stable `--json` contract. Each subdirectory is one app.
 | App | Status | Control surface | What the agent can do |
 |---|---|---|---|
 | **QQ** (`qq/`) | ✅ v1.0 — verified end-to-end on a real account | OneBot 11 HTTP (SnowLuma / NapCat bridge) | Read chats, summarize & reply, contacts, group admin, revoke/react/poke, file upload, OCR, profile |
+| **WeChat** (`wx/`) | ✅ v1.0 — verified end-to-end on WeChat 4.2.0.13 | decrypted local DBs (read) + UIA driving via wechatauto (send) | Read chats/contacts/groups/history from decrypted SQLCipher DBs, send/recall/poke via the real client, self-verifying roundtrip |
+
+## WeChat — replace the WeChat 4.x GUI with a CLI
+
+WeChat PC 4.x has no protocol bridge, so this harness splits the job in two:
+**reads** come from decrypted local SQLCipher databases (fully background,
+works even with the client hidden in the tray) and **sends** drive the real
+client via UIA (wechatauto's hybrid driver), inside a window session that
+restores the client, borrows the focus for a few seconds, and hands both
+focus and z-order straight back. Delivery is proven by reading the message
+back out of the decrypted DB.
+
+```bash
+pip install git+https://github.com/baimocn/cli-anything-extensions.git#subdirectory=wx/agent-harness
+pip install "cli-anything-wx[real]"   # Windows + WeChat 4.x client
+
+cli-anything-wx --json status                        # both channels' health
+cli-anything-wx --json session list                  # the session panel
+cli-anything-wx msg history 文件传输助手               # read (oldest-first)
+cli-anything-wx --json roundtrip 文件传输助手 "hi"     # send + DB read-back proof
+```
+
+Full reference: [`wx/skills/cli-anything-wx/SKILL.md`](wx/skills/cli-anything-wx/SKILL.md).
+Research notes on background-send routes (paid hooks, iPad protocols, why
+"fake background" projects don't hold up): [`wx/agent-harness/WX.md`](wx/agent-harness/WX.md).
 
 ## QQ — replace the QQ GUI with a CLI
 

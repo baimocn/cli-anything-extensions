@@ -235,7 +235,6 @@ def repl(ctx):
 def status(ctx, launch):
     """Health of the control surface (CDP endpoint, chat page, editor)."""
     data = doubao_mod.status(_backend_config(ctx), launch=launch)
-    ok = data["cdp_alive"] and data["page"].get("found")
     output(data, message=(
         f"cdp: {'OK' if data['cdp_alive'] else 'DOWN'} | "
         f"page: {'OK' if data['page'].get('found') else 'NOT FOUND'} | "

@@ -18,7 +18,7 @@ setup(
     description="CLI harness for QQ via NapCat / OneBot 11 HTTP action API",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/HKUDS/CLI-Anything",
+    url="https://github.com/baimocn/cli-anything-extensions",
     license="MIT",
     packages=find_namespace_packages(include=("cli_anything.*",)),
     python_requires=">=3.10",

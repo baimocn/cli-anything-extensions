@@ -9,8 +9,6 @@ Includes four ablation experiments; see TEST.md.
 from __future__ import annotations
 
 import json
-import time
-from pathlib import Path
 
 import pytest
 from click.testing import CliRunner

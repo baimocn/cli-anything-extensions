@@ -6,6 +6,9 @@ build/
 dist/
 .pytest_cache/
 .pytest_tmp*/
+.venv/
+venv/
+.env
 
 # Tooling state
 .mimosa/
@@ -18,6 +21,8 @@ logs/
 *.doubao-harness.json
 *.joplin-harness.json
 
-# OS
+# OS / IDE
 .DS_Store
 Thumbs.db
+.idea/
+.vscode/

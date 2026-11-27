@@ -10,6 +10,9 @@ from typing import Any, Optional
 # The strict character whitelist (no slashes, no backslashes) plus the
 # is_relative_to() check below makes traversal impossible by construction.
 _FILENAME_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*\Z")
+# Windows drive-letter prefix (``C:``). Path.is_absolute() only recognises it
+# on Windows; reject it explicitly so behaviour is identical on POSIX.
+_WINDOWS_DRIVE_RE = re.compile(r"^[A-Za-z]:")
 
 
 def utc_now() -> str:
@@ -24,7 +27,7 @@ def safe_target(path: str) -> Path:
     directory; the returned Path is verified with ``is_relative_to``.
     """
     candidate = Path(path)
-    if candidate.is_absolute() or ".." in candidate.parts:
+    if candidate.is_absolute() or ".." in candidate.parts or _WINDOWS_DRIVE_RE.match(path):
         raise ValueError(f"Invalid project path (traversal not allowed): {path!r}")
     allowed = Path.cwd().resolve()
     target = (allowed / candidate).resolve()
